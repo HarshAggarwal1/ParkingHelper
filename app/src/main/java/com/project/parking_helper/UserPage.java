@@ -1,29 +1,22 @@
 package com.project.parking_helper;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RegisterPage extends AppCompatActivity {
+public class UserPage extends AppCompatActivity {
 
     ImageView backButton;
-    Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_userpage);
 
-        backButton = findViewById(R.id.registerBack);
-        submitButton = findViewById(R.id.registerButtonSubmit);
+        backButton = findViewById(R.id.userPageBack);
 
         backButton.setOnClickListener(v -> {
-            finish();
-        });
-
-        submitButton.setOnClickListener(v -> {
             finish();
         });
 

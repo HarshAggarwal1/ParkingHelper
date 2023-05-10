@@ -11,8 +11,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParkingHelper"
         tools:targetApi="31">
+        <activity android:name=".UserPage"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity android:name=".RegisterPage"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginPage"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="true">
