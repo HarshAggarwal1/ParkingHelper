@@ -15,7 +15,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="false" />
-        <activity android:name=".MainActivity"
+        <activity android:name=".LoginPage"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="false" />
@@ -24,7 +24,7 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".LoginPage"
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="true">

@@ -24,6 +24,7 @@
         android:layout_width="42dp"
         android:layout_height="40dp"
         android:clickable="true"
+        android:elevation="22dp"
         android:contentDescription="@string/menu_icon_description"
         android:focusable="true"
         android:src="@drawable/menu_icon"
@@ -39,6 +40,7 @@
         android:layout_width="91dp"
         android:layout_height="79dp"
         android:clickable="true"
+        android:elevation="22dp"
         android:contentDescription="@string/user_icon_description"
         android:focusable="true"
         android:src="@drawable/user_icon"
@@ -55,8 +57,8 @@
         android:layout_height="164dp"
         android:background="#FF000000"
         android:padding="1dp"
+        android:elevation="32dp"
         app:cardCornerRadius="40dp"
-        app:cardElevation="20dp"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,6 +77,21 @@
             android:src="@drawable/camera_icon" />
 
     </androidx.cardview.widget.CardView>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainDrawerLayout"
+        app:layout_constraintStart_toStartOf="parent">
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/mainNavMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="start"
+            app:menu="@menu/nav_items" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
