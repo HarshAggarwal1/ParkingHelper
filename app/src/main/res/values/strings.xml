@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Parking Helper</string>
+    <string name="background_purple_gradient_circle_description">Background Purple Gradient Circle Vector</string>
+    <string name="menu_icon_description">Menu Icon Vector</string>
+    <string name="user_icon_description">User Icon Vector</string>
+    <string name="camera_icon_description">Camera Icon Vector</string>
 </resources>
