@@ -4,4 +4,5 @@
     <string name="menu_icon_description">Menu Icon Vector</string>
     <string name="user_icon_description">User Icon Vector</string>
     <string name="camera_icon_description">Camera Icon Vector</string>
+    <string name="backButton">Back Button Vector</string>
 </resources>
