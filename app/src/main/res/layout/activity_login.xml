@@ -50,7 +50,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:hint="Username" />
+        android:hint="Email Address" />
 
     <EditText
         android:id="@+id/loginEditTextPassword"
