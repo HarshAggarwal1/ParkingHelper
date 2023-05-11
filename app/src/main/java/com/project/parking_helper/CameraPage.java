@@ -65,21 +65,12 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
 
         cameraPreview = findViewById(R.id.camera_preview);
         if (cameraPreview != null) {
-            Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    while (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d("CameraPage", "Camera Permission Not Granted");
-                            }
-                        }, 1000);
-                    }
-                }
-            };
-            handler.postDelayed(runnable, 0);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("MainActivity", "Camera Permission Denied");
+                turnOffFlashLight();
+                finish();
+            }
+
             cameraPreview.getHolder().addCallback(this);
 
         }
@@ -107,6 +98,7 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                turnOffFlashLight();
                 finish();
             }
         });
@@ -125,14 +117,6 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-//        while (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            Log.d("CameraPage", "Camera Permission Not Granted");
-//        }
         CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
             String cameraId = cameraManager.getCameraIdList()[0];
@@ -226,6 +210,7 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        turnOffFlashLight();
         finish();
     }
 }
