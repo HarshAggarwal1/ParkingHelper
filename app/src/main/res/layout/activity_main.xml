@@ -51,29 +51,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.088" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewCamera"
-        android:layout_width="164dp"
-        android:layout_height="164dp"
-        app:cardCornerRadius="40dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/main_camera_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:padding="40dp"
+            android:layout_width="164dp"
+            android:layout_height="164dp"
             android:clickable="true"
-            android:contentDescription="@string/camera_icon_description"
             android:focusable="true"
+            android:elevation="22dp"
+            android:background="@drawable/rectangle_bg_white_a700_radius_60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/main_camera_icon"
+            android:layout_gravity="center"
+            android:contentDescription="@string/camera_icon_description"
             android:src="@drawable/camera_icon" />
-
-    </androidx.cardview.widget.CardView>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"

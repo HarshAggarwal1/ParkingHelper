@@ -22,7 +22,6 @@ import java.lang.reflect.Field;
 public class MainActivity extends AppCompatActivity {
 
     ImageView userIcon, cameraIconImage, navigationMenu;
-    CardView cameraButtonCard;
     MyDrawer drawerLayout;
 
     @Override
@@ -34,20 +33,12 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setNavigationDrawer();
 
         userIcon = findViewById(R.id.main_user_icon);
-        cameraButtonCard = findViewById(R.id.cardViewCamera);
         cameraIconImage = findViewById(R.id.main_camera_icon);
         navigationMenu = findViewById(R.id.main_menu_bar);
 
         userIcon.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, UserPage.class);
             startActivity(intent);
-        });
-
-        cameraButtonCard.setOnClickListener(v -> {
-//            Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-//            startActivity(intent);
-
-            Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
         });
 
         cameraIconImage.setOnClickListener(v -> {
@@ -92,12 +83,10 @@ public class MainActivity extends AppCompatActivity {
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
             if (slideOffset == 0) {
                 navigationMenu.setElevation(drawerView.getElevation() + 1);
-                cameraButtonCard.setElevation(drawerView.getElevation() + 1);
                 cameraIconImage.setElevation(drawerView.getElevation() + 1);
             }
             else {
                 navigationMenu.setElevation(0);
-                cameraButtonCard.setElevation(0);
                 cameraIconImage.setElevation(0);
             }
         }
@@ -105,14 +94,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onDrawerOpened(@NonNull View drawerView) {
             navigationMenu.setElevation(0);
-            cameraButtonCard.setElevation(0);
             cameraIconImage.setElevation(0);
         }
 
         @Override
         public void onDrawerClosed(@NonNull View drawerView) {
             navigationMenu.setElevation(drawerView.getElevation() + 1);
-            cameraButtonCard.setElevation(drawerView.getElevation() + 1);
             cameraIconImage.setElevation(drawerView.getElevation() + 1);
 
         }
