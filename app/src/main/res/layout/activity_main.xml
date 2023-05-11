@@ -88,6 +88,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_gravity="start"
             app:itemBackground="@drawable/nav_item_drawable_pressed"
+            app:itemIconTint="#FF000000"
             app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/nav_items" />
     </androidx.drawerlayout.widget.DrawerLayout>
