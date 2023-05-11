@@ -4,15 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/navMenuLogin"
+            android:icon="@drawable/login_vector"
             android:title="Login" />
         <item
             android:id="@+id/navMenuChat"
+            android:icon="@drawable/chat_vector"
             android:title="Chat" />
         <item
             android:id="@+id/navMenuSettings"
+            android:icon="@drawable/settings_vector"
             android:title="Settings" />
         <item
             android:id="@+id/navMenuLogout"
+            android:icon="@drawable/logout_vector"
             android:title="Logout" />
     </group>
 </menu>
