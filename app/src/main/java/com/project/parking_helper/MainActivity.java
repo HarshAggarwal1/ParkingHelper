@@ -1,6 +1,8 @@
 package com.project.parking_helper;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,9 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
+import androidx.customview.widget.ViewDragHelper;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.lang.reflect.Field;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -85,9 +90,16 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-            navigationMenu.setElevation(0);
-            cameraButtonCard.setElevation(0);
-            cameraIconImage.setElevation(0);
+            if (slideOffset == 0) {
+                navigationMenu.setElevation(drawerView.getElevation() + 1);
+                cameraButtonCard.setElevation(drawerView.getElevation() + 1);
+                cameraIconImage.setElevation(drawerView.getElevation() + 1);
+            }
+            else {
+                navigationMenu.setElevation(0);
+                cameraButtonCard.setElevation(0);
+                cameraIconImage.setElevation(0);
+            }
         }
 
         @Override
