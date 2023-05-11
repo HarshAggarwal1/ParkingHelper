@@ -78,19 +78,22 @@
             android:background="#00000000"
             android:padding="16dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/camera_back_button"
                 android:src="@drawable/left_arrow"
                 android:clickable="true"
                 android:focusable="true"
+                android:background="@drawable/circle_bg_translucent_black"
                 android:layout_width="36dp"
+                android:padding="4dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center_vertical"
                 android:layout_alignParentStart="true"
-                android:scaleType="centerCrop"/>
+                android:scaleType="fitXY"/>
             <TextView
                 android:gravity="center"
                 android:text="Prototype"
+                android:fontFamily="@font/inria_sans"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="#FFFFFF"
@@ -101,16 +104,18 @@
                 android:layout_alignParentStart="true"
                 android:layout_width="100dp"
                 android:layout_height="40dp"/>
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/camera_flash_button"
                 android:src="@drawable/flash_off"
+                android:background="@drawable/circle_bg_translucent_black"
+                android:padding="4dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center_vertical"
                 android:layout_alignParentEnd="true"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitXY" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -120,11 +125,13 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="32dp"
             android:gravity="center">
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/camera_shutter"
                 android:translationZ="2dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:background="@drawable/circle_bg_translucent_black"
+                android:padding="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

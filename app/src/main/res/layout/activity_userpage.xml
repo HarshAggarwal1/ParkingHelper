@@ -37,10 +37,12 @@
     <ImageView
         android:id="@+id/main_user_icon"
         android:layout_width="185dp"
-        android:layout_height="189dp"
+        android:layout_height="185dp"
         android:layout_marginTop="12dp"
         android:contentDescription="@string/user_icon_description"
         android:src="@drawable/profile_pic"
+        android:padding="2dp"
+        android:background="@drawable/circle_bg_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userPageBack" />

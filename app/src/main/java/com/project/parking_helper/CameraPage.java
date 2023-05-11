@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,10 +28,13 @@ import java.util.Collections;
 public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callback{
 
     private SurfaceView cameraPreview;
+    private ImageView flashLightButton;
+    private ImageView shutterButton;
     private CameraDevice cameraDevice;
     private CameraCaptureSession cameraCaptureSession;
     private CaptureRequest.Builder previewRequestBuilder;
     private Handler backgroundHandler;
+    private boolean isFlashOn = false;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -51,30 +56,84 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
         setContentView(R.layout.activity_camera);
 
         // ---------- Camera Permission ------------
-        cameraPreview = findViewById(R.id.camera_preview);
-        if (cameraPreview != null) {
-            cameraPreview.getHolder().addCallback(this);
-        }
-
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CAMERA},1);
         }
         else {
             Log.d("CameraPage", "Camera Permission Already Granted");
         }
-        while (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.d("CameraPage", "Camera Permission Not Granted");
+
+        cameraPreview = findViewById(R.id.camera_preview);
+        if (cameraPreview != null) {
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    while (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d("CameraPage", "Camera Permission Not Granted");
+                            }
+                        }, 1000);
+                    }
+                }
+            };
+            handler.postDelayed(runnable, 0);
+            cameraPreview.getHolder().addCallback(this);
+
         }
+
+        // ---------- Flashlight Button ------------
+        flashLightButton = findViewById(R.id.camera_flash_button);
+        flashLightButton.setImageResource(R.drawable.flash_off);
+        flashLightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFlashOn) {
+                    turnOffFlashLight();
+                    flashLightButton.setImageResource(R.drawable.flash_off);
+                    isFlashOn = false;
+                } else {
+                    turnOnFlashLight();
+                    flashLightButton.setImageResource(R.drawable.flash_on);
+                    isFlashOn = true;
+                }
+            }
+        });
+
+        // ---------- Back Button ------------
+        ImageView backButton = findViewById(R.id.camera_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        // ---------- Shutter Button ------------
+        shutterButton = findViewById(R.id.camera_shutter);
+        shutterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CameraPage.this, "Shutter Clicked", Toast.LENGTH_SHORT).show();
+                // captureImage();
+            }
+        });
+
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+//        while (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            Log.d("CameraPage", "Camera Permission Not Granted");
+//        }
+        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
             String cameraId = cameraManager.getCameraIdList()[0];
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -100,7 +159,7 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
                 }
             }, null);
         } catch (Exception e) {
-            Log.d("MainActivity", "Camera Error");
+            Log.d("CameraPage", "Camera Error");
             e.printStackTrace();
         }
     }
@@ -137,6 +196,28 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
                     Toast.makeText(CameraPage.this, "Unable to create camera preview session", Toast.LENGTH_SHORT).show();
                 }
             }, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void turnOnFlashLight() {
+        try {
+            if (cameraDevice != null) {
+                previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
+                cameraCaptureSession.setRepeatingRequest(previewRequestBuilder.build(), null, backgroundHandler);
+            }
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void turnOffFlashLight() {
+        try {
+            if (cameraDevice != null) {
+                previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+                cameraCaptureSession.setRepeatingRequest(previewRequestBuilder.build(), null, backgroundHandler);
+            }
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
