@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_grey_transparent">#55CCCCCC</color>
     <color name="button_bg_purple">#FFC673E3</color>
+    <color name="light_grey">#55CCCCCC</color>
 </resources>

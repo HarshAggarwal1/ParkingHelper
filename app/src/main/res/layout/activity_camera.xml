@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <!-- Header with title and back button -->
+
+
+    <!-- QR code scanner with camera view and mask -->
+    <FrameLayout
+        android:id="@+id/camera_scanner_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <SurfaceView
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/camera_qr_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:translationZ="1dp"
+                android:layout_weight="1"
+                android:src="@drawable/background_tint_transparent"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/background_tint_transparent"/>
+
+                <ImageView
+                    android:id="@+id/camera_mask_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.5"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/qr_mask"
+                    android:translationZ="1dp" />
+                <ImageView
+                    android:src="@drawable/background_tint_transparent"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/background_tint_transparent"
+                android:layout_weight="1">
+            </ImageView>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/camera_header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:translationZ="1dp"
+            android:layout_marginTop="40dp"
+            android:background="#00000000"
+            android:padding="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/camera_back_button"
+                android:src="@drawable/left_arrow"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentStart="true"
+                android:scaleType="centerCrop"/>
+            <TextView
+                android:gravity="center"
+                android:text="Prototype"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp"
+                android:background="@drawable/background_tint_transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="100dp"
+                android:layout_height="40dp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/camera_flash_button"
+                android:src="@drawable/flash_off"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerCrop" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:translationZ="1dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:gravity="center">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/camera_shutter"
+                android:translationZ="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/camera_shutter"/>
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>

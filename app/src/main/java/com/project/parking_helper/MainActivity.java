@@ -42,9 +42,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cameraIconImage.setOnClickListener(v -> {
-//            Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-//            startActivity(intent);
-            Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, CameraPage.class);
+            startActivity(intent);
         });
 
         navigationMenu.setOnClickListener(v -> drawerLayout.drawerLayout.openDrawer(GravityCompat.START));
