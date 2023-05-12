@@ -7,6 +7,10 @@
             android:icon="@drawable/login_vector"
             android:title="Login" />
         <item
+            android:id="@+id/navMenuCallLog"
+            android:icon="@drawable/call_log_vector"
+            android:title="Call Log" />
+        <item
             android:id="@+id/navMenuChat"
             android:icon="@drawable/chat_vector"
             android:title="Chat" />

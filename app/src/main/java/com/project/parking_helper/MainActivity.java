@@ -102,11 +102,17 @@ public class MainActivity extends AppCompatActivity{
                     System.out.println("Login Clicked");
                     intent = new Intent(MainActivity.this, LoginPage.class);
                     startActivity(intent);
-                } else if (id == R.id.navMenuChat) {
+                }
+                else if (id == R.id.navMenuCallLog) {
                     Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.navMenuSettings) {
+                }
+                else if (id == R.id.navMenuChat) {
                     Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.navMenuLogout) {
+                }
+                else if (id == R.id.navMenuSettings) {
+                    Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
+                }
+                else if (id == R.id.navMenuLogout) {
                     finish();
                 }
                 drawerLayout.closeDrawers();
