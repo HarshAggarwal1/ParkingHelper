@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.project.parking_helper.database.Database;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +23,8 @@ public class LoginPage extends AppCompatActivity {
     ImageView backButton, googleSignInButton, showPasswordButton;
     Button loginButton, registerButton;
     EditText email, password;
+
+    private Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class LoginPage extends AppCompatActivity {
         showPasswordButton = findViewById(R.id.loginButtonShowHidePassword);
         email = findViewById(R.id.loginEditTextUsername);
         password = findViewById(R.id.loginEditTextPassword);
+
+        database = Database.getInstance(this);
 
         showPasswordButton.setOnClickListener(v -> {
             if (password.getInputType() == 129) {
@@ -69,8 +74,22 @@ public class LoginPage extends AppCompatActivity {
                 password.requestFocus();
                 return;
             }
-            Intent intent = new Intent(LoginPage.this, MainActivity.class);
-            startActivity(intent);
+
+            String emailText = this.email.getText().toString();
+            String passwordText = this.password.getText().toString();
+
+            if (database.userDao().checkEmail(emailText) == null) {
+                email.setError("Email not registered");
+                email.requestFocus();
+            }
+            else if (!database.userDao().getPassword(emailText).equals(passwordText)) {
+                password.setError("Incorrect password");
+                password.requestFocus();
+            }
+            else {
+                Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                startActivity(intent);
+            }
         });
 
         googleSignInButton.setOnClickListener(v -> {

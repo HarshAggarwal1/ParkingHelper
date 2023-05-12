@@ -124,7 +124,7 @@ public class RegisterPage extends AppCompatActivity {
             String vNumber = vehicleNumber.getText().toString();
 
             if (database.userDao().checkEmail(emailId) != null) {
-                Toast.makeText(this, "You are already Registered!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "User already Registered!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
