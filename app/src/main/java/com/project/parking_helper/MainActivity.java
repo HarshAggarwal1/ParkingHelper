@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity{
             }
             else {
                 layout.setElevation(0);
-                layout.setAlpha(1 - slideOffset / 2);
+                layout.setAlpha(1 - (slideOffset / 2));
                 callerCard.setElevation(22 - (slideOffset * 22));
                 userIcon.setElevation(0);
                 navigationMenu.setElevation(0);
