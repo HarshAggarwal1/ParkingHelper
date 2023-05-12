@@ -77,6 +77,15 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
                 Log.d("MainActivity", "Storage Permission Denied");
             }
         }
+        if (requestCode == 3) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(CameraPage.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("MainActivity", "Storage Permission Accepted");
+                }
+            } else {
+                Log.d("MainActivity", "Storage Permission Denied");
+            }
+        }
     }
 
     @Override
@@ -96,6 +105,15 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             System.out.println("Storage Permission Not Granted");
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
+        }
+        else {
+            Log.d("CameraPage", "Storage Permission Already Granted");
+        }
+
+        // ---------- Storage Permission ------------
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            System.out.println("Storage Permission Not Granted");
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},3);
         }
         else {
             Log.d("CameraPage", "Storage Permission Already Granted");
@@ -146,7 +164,15 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
 
         // ---------- Shutter Button ------------
         shutterButton = findViewById(R.id.camera_shutter);
-        shutterButton.setOnClickListener(v -> captureImage());
+        shutterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shutterButton.setImageResource(R.drawable.yellow_camera_shutter);
+                shutterButton.setBackgroundResource(R.drawable.circle_bg_yellow_shutter_clicked);
+                captureImage();
+
+            }
+        });
 
     }
 
@@ -194,6 +220,8 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
                     catch (Exception e) {
                         e.printStackTrace();
                     }
+                    shutterButton.setImageResource(R.drawable.camera_shutter);
+                    shutterButton.setBackgroundResource(R.drawable.circle_bg_translucent_black);
                 }
             };
 
@@ -220,8 +248,9 @@ public class CameraPage extends AppCompatActivity implements SurfaceHolder.Callb
     }
 
     private void saveImage(Bitmap bitmap) {
-        String path = Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/" + System.currentTimeMillis() + ".jpg";
-        File file = new File(Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/" + System.currentTimeMillis() + ".jpg");
+        String fileName = "PH" + System.currentTimeMillis() + ".jpg";
+        String path = Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/" + fileName;
+        File file = new File(Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/" + "PH" + System.currentTimeMillis() + ".jpg");
         System.out.println(file.getAbsolutePath());
         try {
             OutputStream outputStream = Files.newOutputStream(file.toPath());
