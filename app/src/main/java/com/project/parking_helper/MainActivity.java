@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
         callerCard = findViewById(R.id.main_caller_card);
         callerCardUserPic = findViewById(R.id.caller_card_pic);
         callerCardCall = findViewById(R.id.caller_card_phone_icon);
-        callerCardAddPersonOrChat = findViewById(R.id.caller_card_add_person_or_chat_icon);
+        callerCardAddPersonOrChat = findViewById(R.id.caller_card_chat_icon);
         callerCardCancel = findViewById(R.id.caller_card_cancel_icon);
         callerCardUserName = findViewById(R.id.caller_card_name);
 

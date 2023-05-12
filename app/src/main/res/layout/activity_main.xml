@@ -139,7 +139,7 @@
                         android:clickable="true"
                         android:focusable="true" />
                     <ImageView
-                        android:id="@+id/caller_card_add_person_or_chat_icon"
+                        android:id="@+id/caller_card_chat_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:foregroundGravity="center"
@@ -147,7 +147,7 @@
                         android:layout_weight="1"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="4dp"
-                        android:src="@drawable/add_person_icon"
+                        android:src="@drawable/chat_icon"
                         android:outlineAmbientShadowColor="@color/light_grey_transparent"
                         android:clickable="true"
                         android:focusable="true" />
