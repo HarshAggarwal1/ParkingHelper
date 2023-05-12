@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.project.parking_helper.database.AppData;
 import com.project.parking_helper.database.Database;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,6 +88,7 @@ public class LoginPage extends AppCompatActivity {
                 password.requestFocus();
             }
             else {
+                database.appDao().insert(new AppData(emailText, passwordText));
                 Intent intent = new Intent(LoginPage.this, MainActivity.class);
                 startActivity(intent);
             }

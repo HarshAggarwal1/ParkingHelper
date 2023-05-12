@@ -10,6 +10,10 @@ public interface AppDAO {
     @Insert
     void insert(AppData appData);
 
+    // check if database empty
+    @Query("SELECT COUNT(*) FROM AppData")
+    int count();
+
     // get the first row
     @Query("SELECT * FROM AppData LIMIT 1")
     AppData getFirstRow();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import androidx.customview.widget.ViewDragHelper;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.project.parking_helper.database.Database;
 
 import java.lang.reflect.Field;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity{
 
     private static String generatedCode = "";
     private View layout;
+
+    private Database database;
 
 
     @Override
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity{
         callerCardAddPersonOrChat = findViewById(R.id.caller_card_chat_icon);
         callerCardCancel = findViewById(R.id.caller_card_cancel_icon);
         callerCardUserName = findViewById(R.id.caller_card_name);
+
+        database = Database.getInstance(this);
 
         callerCard.setVisibility(View.GONE);
 
@@ -116,6 +122,7 @@ public class MainActivity extends AppCompatActivity{
                     Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
                 }
                 else if (id == R.id.navMenuLogout) {
+                    database.appDao().deleteAll();
                     finish();
                 }
                 drawerLayout.closeDrawers();
@@ -197,6 +204,18 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         layout = findViewById(R.id.mainLayout);
+        if (database.appDao().count() == 0) {
+            NavigationView navigationView = findViewById(R.id.mainNavMenu);
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.navMenuLogin).setVisible(true);
+            menu.findItem(R.id.navMenuLogout).setVisible(false);
+        }
+        else {
+            NavigationView navigationView = findViewById(R.id.mainNavMenu);
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.navMenuLogin).setVisible(false);
+            menu.findItem(R.id.navMenuLogout).setVisible(true);
+        }
         layout.setAlpha(1);
         if (!getGeneratedCode().equals("")) {
             toastGeneratedCode();
