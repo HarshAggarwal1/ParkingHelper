@@ -29,6 +29,10 @@
             app:flashButtonPosition="topEnd"
             app:flashButtonPaddingVertical="40dp"
             app:flashButtonPaddingHorizontal="40dp"
+            app:frameCornersCapRounded="true"
+            app:frameCornersSize="100dp"
+            app:frameCornersRadius="40dp"
+            app:frameThickness="10dp"
             app:maskColor="#77000000"
 
             />
