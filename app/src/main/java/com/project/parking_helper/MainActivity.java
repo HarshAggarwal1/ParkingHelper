@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity{
 
 
         userIcon.setOnClickListener(v -> {
+            if (database.appDao().count() == 0) {
+                Toast.makeText(this, "Please Login First!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(MainActivity.this, UserPage.class);
             startActivity(intent);
         });
