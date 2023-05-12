@@ -14,8 +14,8 @@ public interface UserDAO {
     void insert(String firstName, String lastName, String email, String password);
 
     // insert remaining data of entered email
-    @Query("UPDATE UserData SET `Country Code` = :countryCode, `Phone Number` = :phoneNumber, `Vehicle Type` = :vehicleType, `Vehicle Number` = :vehicleNumber WHERE email = :email")
-    void insert(String email, String countryCode, String phoneNumber, String vehicleType, String vehicleNumber);
+    @Query("UPDATE UserData SET `Country Code` = :countryCode, `Phone Number` = :phoneNumber, `Vehicle Number` = :vehicleNumber WHERE email = :email")
+    void insertRemaining(String email, String countryCode, String phoneNumber, String vehicleNumber);
 
     // Query to check if email exists in database
     @Query("SELECT * FROM UserData WHERE email = :email")
@@ -32,10 +32,6 @@ public interface UserDAO {
     // Query to update the vehicle number in database for the entered email
     @Query("UPDATE UserData SET `Vehicle Number` = :vehicleNumber WHERE email = :email")
     void updateVehicleNumber(String email, String vehicleNumber);
-
-    // Query to update the vehicle type in database for the entered email
-    @Query("UPDATE UserData SET `Vehicle Type` = :vehicleType WHERE email = :email")
-    void updateVehicleType(String email, String vehicleType);
 
     // Query to update the phone number in database for the entered email
     @Query("UPDATE UserData SET `Phone Number` = :phoneNumber WHERE email = :email")

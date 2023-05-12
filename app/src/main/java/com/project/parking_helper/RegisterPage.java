@@ -8,11 +8,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.project.parking_helper.database.Database;
+import com.project.parking_helper.database.UserData;
+
 public class RegisterPage extends AppCompatActivity {
 
-    ImageView backButton, showPasswordButton;
-    Button submitButton;
-    EditText fName, lName, email, password, countryCode, mobileNumber;
+    private ImageView backButton, showPasswordButton;
+    private Button submitButton;
+    private EditText fName, lName, email, password, countryCode, mobileNumber, vehicleNumber;
+    private Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,9 @@ public class RegisterPage extends AppCompatActivity {
         countryCode = findViewById(R.id.registerEditTextCountryCode);
         mobileNumber = findViewById(R.id.registerEditTextContact);
         showPasswordButton = findViewById(R.id.registerButtonShowHidePassword);
+        vehicleNumber = findViewById(R.id.registerEditTextVehicle);
+
+        database = Database.getInstance(this);
 
         showPasswordButton.setOnClickListener(v -> {
             if (password.getInputType() == 129) {
@@ -102,16 +109,35 @@ public class RegisterPage extends AppCompatActivity {
                 mobileNumber.setError("Please enter a valid mobile number");
                 mobileNumber.requestFocus();
                 return;
+            } else if (vehicleNumber.getText().toString().isEmpty()) {
+                vehicleNumber.setError("Please enter your vehicle number");
+                vehicleNumber.requestFocus();
+                return;
             }
+
             String firstName = fName.getText().toString();
             String lastName = lName.getText().toString();
             String emailId = email.getText().toString();
             String pass = password.getText().toString();
             String cCode = countryCode.getText().toString();
             String mNumber = mobileNumber.getText().toString();
+            String vNumber = vehicleNumber.getText().toString();
 
-            Toast.makeText(this, "You are Registered Successfully!", Toast.LENGTH_SHORT).show();
-            finish();
+            if (database.userDao().checkEmail(emailId) != null) {
+                Toast.makeText(this, "You are already Registered!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                database.userDao().insert( new UserData(firstName, lastName, emailId, pass, cCode, mNumber, vNumber));
+
+                Toast.makeText(this, "You are Registered Successfully!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            catch (Exception e) {
+                Toast.makeText(this, "Error Occurred! Try Again.", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
     }

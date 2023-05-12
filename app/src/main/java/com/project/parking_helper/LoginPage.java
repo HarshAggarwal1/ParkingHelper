@@ -107,7 +107,7 @@ public class LoginPage extends AppCompatActivity {
             }
             catch (ApiException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Server Error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error Occurred!", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -7,4 +7,12 @@
     <string name="backButton">Back Button Vector</string>
     <string name="show_hide">Show Hide Vector</string>
     <string name="left_arrow">Left Arrow</string>
+    <string-array name="vehicleType">
+        <item>Car</item>
+        <item>Motorcycle</item>
+        <item>Scooty</item>
+        <item>Truck</item>
+        <item>Bus</item>
+        <item>Other</item>
+    </string-array>
 </resources>
