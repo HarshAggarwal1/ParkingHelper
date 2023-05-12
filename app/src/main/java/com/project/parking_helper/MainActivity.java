@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity{
         callerCardCancel = findViewById(R.id.caller_card_cancel_icon);
         callerCardUserName = findViewById(R.id.caller_card_name);
 
+        callerCard.setVisibility(View.GONE);
+
 
         userIcon.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, UserPage.class);
@@ -79,7 +81,8 @@ public class MainActivity extends AppCompatActivity{
         });
 
         callerCardCancel.setOnClickListener(v -> {
-            Toast.makeText(this, "Cancel Button Clicked", Toast.LENGTH_SHORT).show();
+            setGeneratedCode("");
+            callerCard.setVisibility(View.GONE);
 //            Intent intent = new Intent(MainActivity.this, CancelPage.class);
 //            startActivity(intent);
         });
@@ -197,7 +200,7 @@ public class MainActivity extends AppCompatActivity{
         layout.setAlpha(1);
         if (!getGeneratedCode().equals("")) {
             toastGeneratedCode();
-            setGeneratedCode("");
+            callerCard.setVisibility(View.VISIBLE);
         }
         if (drawerLayout.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.drawerLayout.closeDrawers();
