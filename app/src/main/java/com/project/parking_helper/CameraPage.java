@@ -54,6 +54,7 @@ public class CameraPage extends AppCompatActivity{
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
     private final int requestCode = 1;
     private boolean permissionsGranted = true;
+    MainActivity mainActivity;
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode,permissions,grantResults);
@@ -99,11 +100,13 @@ public class CameraPage extends AppCompatActivity{
             finish();
         }
 
+        mainActivity = new MainActivity();
+
         CodeScannerView scannerView = findViewById(R.id.camera_preview);
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(result -> {
             runOnUiThread(() -> {
-                Toast.makeText(CameraPage.this, result.getText(), Toast.LENGTH_SHORT).show();
+                mainActivity.setGeneratedCode(result.getText());
                 finish();
             });
         });

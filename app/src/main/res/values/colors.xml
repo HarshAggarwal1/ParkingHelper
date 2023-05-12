@@ -10,4 +10,5 @@
     <color name="light_grey_transparent">#55CCCCCC</color>
     <color name="button_bg_purple">#FFC673E3</color>
     <color name="light_grey">#55CCCCCC</color>
+    <color name="drawer_scrim">#77000000</color>
 </resources>

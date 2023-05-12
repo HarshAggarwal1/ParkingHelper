@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainLayout"
+        android:elevation="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/background_purple_gradient_circle"
         android:layout_width="700dp"
@@ -68,11 +74,13 @@
             android:layout_gravity="center"
             android:contentDescription="@string/camera_icon_description"
             android:src="@drawable/camera_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mainDrawerLayout"
+
         app:layout_constraintStart_toStartOf="parent">
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/mainNavMenu"
