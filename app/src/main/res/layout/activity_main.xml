@@ -74,6 +74,100 @@
             android:layout_gravity="center"
             android:contentDescription="@string/camera_icon_description"
             android:src="@drawable/camera_icon" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/main_caller_card"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="136dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            app:cardCornerRadius="20dp"
+            android:elevation="22dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_camera_icon">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_gradient_caller_card"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="69dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/caller_card_pic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/user_icon" />
+                    <TextView
+                        android:id="@+id/caller_card_name"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textSize="28sp"
+                        android:textColor="#FF000000"
+                        android:fontFamily="@font/inria_sans" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/caller_card_phone_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foregroundGravity="center"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/call_icon"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:outlineAmbientShadowColor="@color/light_grey_transparent"
+                        android:clickable="true"
+                        android:focusable="true" />
+                    <ImageView
+                        android:id="@+id/caller_card_add_person_or_chat_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foregroundGravity="center"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/add_person_icon"
+                        android:outlineAmbientShadowColor="@color/light_grey_transparent"
+                        android:clickable="true"
+                        android:focusable="true" />
+                    <ImageView
+                        android:id="@+id/caller_card_cancel_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foregroundGravity="center"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/cancel_icon"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:outlineAmbientShadowColor="@color/light_grey_transparent"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.drawerlayout.widget.DrawerLayout

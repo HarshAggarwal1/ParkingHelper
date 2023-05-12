@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity{
 
     ImageView userIcon, cameraIconImage, navigationMenu;
     MyDrawer drawerLayout;
+    CardView callerCard;
+    ImageView callerCardUserPic, callerCardCall, callerCardAddPersonOrChat, callerCardCancel;
+    TextView callerCardUserName;
 
     private static String generatedCode = "";
     private View layout;
@@ -42,6 +46,13 @@ public class MainActivity extends AppCompatActivity{
         userIcon = findViewById(R.id.main_user_icon);
         cameraIconImage = findViewById(R.id.main_camera_icon);
         navigationMenu = findViewById(R.id.main_menu_bar);
+        callerCard = findViewById(R.id.main_caller_card);
+        callerCardUserPic = findViewById(R.id.caller_card_pic);
+        callerCardCall = findViewById(R.id.caller_card_phone_icon);
+        callerCardAddPersonOrChat = findViewById(R.id.caller_card_add_person_or_chat_icon);
+        callerCardCancel = findViewById(R.id.caller_card_cancel_icon);
+        callerCardUserName = findViewById(R.id.caller_card_name);
+
 
         userIcon.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, UserPage.class);
@@ -54,6 +65,24 @@ public class MainActivity extends AppCompatActivity{
         });
 
         navigationMenu.setOnClickListener(v -> drawerLayout.drawerLayout.openDrawer(GravityCompat.START));
+
+        callerCardCall.setOnClickListener(v -> {
+            Toast.makeText(this, "Calling Button Clicked", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(MainActivity.this, CallPage.class);
+//            startActivity(intent);
+        });
+
+        callerCardAddPersonOrChat.setOnClickListener(v -> {
+            Toast.makeText(this, "Add Person or Chat Button Clicked", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(MainActivity.this, AddPersonOrChatPage.class);
+//            startActivity(intent);
+        });
+
+        callerCardCancel.setOnClickListener(v -> {
+            Toast.makeText(this, "Cancel Button Clicked", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(MainActivity.this, CancelPage.class);
+//            startActivity(intent);
+        });
     }
 
     class MyDrawer implements DrawerLayout.DrawerListener {
@@ -90,6 +119,7 @@ public class MainActivity extends AppCompatActivity{
             if (slideOffset == 0) {
                 layout.setAlpha(1);
                 layout.setElevation(drawerView.getElevation() + 1);
+                callerCard.setElevation(drawerView.getElevation() + 1);
                 userIcon.setElevation(drawerView.getElevation() + 1);
                 navigationMenu.setElevation(drawerView.getElevation() + 1);
                 cameraIconImage.setElevation(drawerView.getElevation() + 1);
@@ -97,9 +127,10 @@ public class MainActivity extends AppCompatActivity{
             else {
                 layout.setElevation(0);
                 layout.setAlpha(1 - slideOffset / 2);
+                callerCard.setElevation(22 - (slideOffset * 22));
                 userIcon.setElevation(0);
                 navigationMenu.setElevation(0);
-                cameraIconImage.setElevation(0);
+                cameraIconImage.setElevation(22 - (slideOffset * 22));
             }
         }
 
@@ -107,6 +138,7 @@ public class MainActivity extends AppCompatActivity{
         public void onDrawerOpened(@NonNull View drawerView) {
             layout.setAlpha(0.5f);
             layout.setElevation(0);
+            callerCard.setElevation(0);
             userIcon.setElevation(0);
             navigationMenu.setElevation(0);
             cameraIconImage.setElevation(0);
@@ -116,6 +148,7 @@ public class MainActivity extends AppCompatActivity{
         public void onDrawerClosed(@NonNull View drawerView) {
             layout.setAlpha(1);
             layout.setElevation(drawerView.getElevation() + 1);
+            callerCard.setElevation(drawerView.getElevation() + 1);
             userIcon.setElevation(drawerView.getElevation() + 1);
             navigationMenu.setElevation(drawerView.getElevation() + 1);
             cameraIconImage.setElevation(drawerView.getElevation() + 1);
