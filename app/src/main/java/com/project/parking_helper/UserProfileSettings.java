@@ -21,8 +21,6 @@ public class UserProfileSettings extends AppCompatActivity {
 
         backButton = findViewById(R.id.profile_settings_back_button);
 
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
     }
 }

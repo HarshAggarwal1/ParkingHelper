@@ -196,7 +196,9 @@ public class MainActivity extends AppCompatActivity{
                                 super.onAuthenticationSucceeded(result);
                                 isBiometricSuccess = true;
                                 Intent intent = new Intent(MainActivity.this, UserProfileSettings.class);
-                                startActivity(intent);
+                                if (isBiometricSuccess) {
+                                    startActivity(intent);
+                                }
                                 isBiometricSuccess = false;
                             }
 
