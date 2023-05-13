@@ -1,10 +1,15 @@
 package com.project.parking_helper;
 
-import android.app.Activity;
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Point;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telecom.ConnectionRequest;
+import android.telecom.PhoneAccountHandle;
+import android.telecom.TelecomManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,16 +21,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.customview.widget.ViewDragHelper;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.project.parking_helper.database.Database;
 
-import java.lang.reflect.Field;
-
 public class MainActivity extends AppCompatActivity{
 
+    private final int requestCode = 1;
     ImageView userIcon, cameraIconImage, navigationMenu;
     MyDrawer drawerLayout;
     CardView callerCard;
@@ -36,6 +39,22 @@ public class MainActivity extends AppCompatActivity{
     private View layout;
 
     private Database database;
+    private boolean callPermissionGranted = true;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        if (requestCode == this.requestCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("MainActivity", "Call Permission Accepted");
+                }
+            }
+            else {
+                Log.d("MainActivity", "Call Permission Denied");
+            }
+        }
+    }
 
 
     @Override
@@ -44,6 +63,19 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         layout = findViewById(R.id.mainLayout);
         drawerLayout = new MyDrawer();
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            callPermissionGranted = false;
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 1);
+        }
+
+        if (callPermissionGranted) {
+            Log.d("MainActivity", "Call Permission Already Granted");
+        }
+        else {
+            Log.d("MainActivity", "Call Permission Not Granted");
+            return;
+        }
 
         drawerLayout.setNavigationDrawer();
 
@@ -72,6 +104,10 @@ public class MainActivity extends AppCompatActivity{
         });
 
         cameraIconImage.setOnClickListener(v -> {
+            if (database.appDao().count() == 0) {
+                Toast.makeText(this, "Please Login First!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(MainActivity.this, CameraPage.class);
             startActivity(intent);
         });
@@ -79,9 +115,14 @@ public class MainActivity extends AppCompatActivity{
         navigationMenu.setOnClickListener(v -> drawerLayout.drawerLayout.openDrawer(GravityCompat.START));
 
         callerCardCall.setOnClickListener(v -> {
-            Toast.makeText(this, "Calling Button Clicked", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(MainActivity.this, CallPage.class);
-//            startActivity(intent);
+
+            String phoneNumber = getGeneratedCode();
+
+            Uri uri = Uri.parse("tel:" + phoneNumber);
+            TelecomManager telecomManager = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
+            if (telecomManager != null) {
+                    telecomManager.placeCall(uri,null);
+            }
         });
 
         callerCardAddPersonOrChat.setOnClickListener(v -> {
@@ -222,7 +263,6 @@ public class MainActivity extends AppCompatActivity{
         }
         layout.setAlpha(1);
         if (!getGeneratedCode().equals("")) {
-            toastGeneratedCode();
             callerCard.setVisibility(View.VISIBLE);
         }
         if (drawerLayout.drawerLayout.isDrawerOpen(GravityCompat.START)) {

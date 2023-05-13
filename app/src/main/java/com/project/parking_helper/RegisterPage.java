@@ -75,7 +75,7 @@ public class RegisterPage extends AppCompatActivity {
                 email.requestFocus();
                 return;
             }
-            else if (!email.getText().toString().matches("[a-zA-Z\\d._-]+@[a-z]+\\.+[a-z]+")) {
+            else if (!(email.getText().toString().matches("[a-zA-Z\\d._-]+@[a-z]+\\.+[a-z]+") || email.getText().toString().matches("[a-zA-Z\\d._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+"))) {
                 email.setError("Please enter a valid email");
                 email.requestFocus();
                 return;
@@ -131,7 +131,7 @@ public class RegisterPage extends AppCompatActivity {
             try {
                 database.userDao().insert( new UserData(firstName, lastName, emailId, pass, cCode, mNumber, vNumber));
 
-                Toast.makeText(this, "You are Registered Successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
                 finish();
             }
             catch (Exception e) {

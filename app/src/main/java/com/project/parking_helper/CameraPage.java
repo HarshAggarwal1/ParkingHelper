@@ -51,7 +51,7 @@ import java.util.List;
 public class CameraPage extends AppCompatActivity{
 
     private CodeScanner mCodeScanner;
-    private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private final String[] permissions = {};
     private final int requestCode = 1;
     private boolean permissionsGranted = true;
     MainActivity mainActivity;
@@ -67,14 +67,6 @@ public class CameraPage extends AppCompatActivity{
                 } else if (ContextCompat.checkSelfPermission(CameraPage.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Log.d("MainActivity", "Storage Permission Accepted");
                 }
-            } else {
-                if (ContextCompat.checkSelfPermission(CameraPage.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    Log.d("MainActivity", "Camera Permission Denied");
-                } else if (ContextCompat.checkSelfPermission(CameraPage.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Log.d("MainActivity", "Write Permission Denied");
-                } else if (ContextCompat.checkSelfPermission(CameraPage.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Log.d("MainActivity", "Read Permission Denied");
-                }
             }
         }
     }
@@ -84,12 +76,9 @@ public class CameraPage extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        for (String permission : permissions) {
-            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                permissionsGranted = false;
-                requestPermissions(permissions, requestCode);
-                break;
-            }
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissionsGranted = false;
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, requestCode);
         }
 
         if (permissionsGranted) {

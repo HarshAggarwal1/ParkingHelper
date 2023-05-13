@@ -60,7 +60,7 @@ public class LoginPage extends AppCompatActivity {
                 email.requestFocus();
                 return;
             }
-            else if (!email.getText().toString().matches("[a-zA-Z\\d._-]+@[a-z]+\\.+[a-z]+")) {
+            else if (!(email.getText().toString().matches("[a-zA-Z\\d._-]+@[a-z]+\\.+[a-z]+") || email.getText().toString().matches("[a-zA-Z\\d._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+"))) {
                 email.setError("Please enter a valid email");
                 email.requestFocus();
                 return;
