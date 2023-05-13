@@ -168,7 +168,9 @@ public class MainActivity extends AppCompatActivity{
                 }
                 else if (id == R.id.navMenuLogout) {
                     database.appDao().deleteAll();
-                    finish();
+                    Menu menu = navigationView.getMenu();
+                    menu.findItem(R.id.navMenuLogin).setVisible(true);
+                    menu.findItem(R.id.navMenuLogout).setVisible(false);
                 }
                 drawerLayout.closeDrawers();
                 return true;

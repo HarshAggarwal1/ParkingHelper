@@ -23,7 +23,7 @@ public class UserPage extends AppCompatActivity {
 
     TextView userName, userEmail, userPhone, userVehicleNumber;
     ImageView showInfoButton;
-    private static boolean isBiometricSuccess = false;
+    private boolean isBiometricSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,26 +62,16 @@ public class UserPage extends AppCompatActivity {
 
         showInfoButton.setOnClickListener(v -> {
 
-            if (!UserPage.isBiometricSuccess) {
+            if (!this.isBiometricSuccess) {
                 BiometricManager biometricManager = BiometricManager.from(this);
                 biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
                 if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
-                    Toast.makeText(this, "Please authenticate to view your information", Toast.LENGTH_SHORT).show();
-                    UserPage.isBiometricSuccess = true;
                 }
                 else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
-                    Toast.makeText(this, "Try Again Later!", Toast.LENGTH_SHORT).show();
-                    UserPage.isBiometricSuccess = false;
                     return;
                 }
                 else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
-                    Toast.makeText(this, "No user found", Toast.LENGTH_SHORT).show();
-                    UserPage.isBiometricSuccess = false;
                     return;
-                }
-                else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
-                    Toast.makeText(this, "Please authenticate to view your information", Toast.LENGTH_SHORT).show();
-                    UserPage.isBiometricSuccess = true;
                 }
 
                 Executor executor = ContextCompat.getMainExecutor(this);
@@ -89,24 +79,22 @@ public class UserPage extends AppCompatActivity {
                     @Override
                     public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-
-                        Toast.makeText(UserPage.this, "Authentication Error: " + errString, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-
-                        Toast.makeText(UserPage.this, "Authentication Successful!", Toast.LENGTH_SHORT).show();
-                        UserPage.isBiometricSuccess = true;
+                        isBiometricSuccess = true;
+                        userEmail.setText(email);
+                        userPhone.setText(phone);
+                        userVehicleNumber.setText(vNumber);
+                        isInfoVisible = true;
                     }
 
                     @Override
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
-
-                        Toast.makeText(UserPage.this, "Authentication Failed!", Toast.LENGTH_SHORT).show();
-                        UserPage.isBiometricSuccess = false;
+                        isBiometricSuccess = false;
                     }
                 });
 
@@ -119,17 +107,18 @@ public class UserPage extends AppCompatActivity {
                 biometricPrompt.authenticate(promptInfo);
             }
 
-
-            if (isInfoVisible) {
-                userEmail.setText(hiddenEmail);
-                userPhone.setText(hiddenPhone);
-                userVehicleNumber.setText(hiddenVNumber);
-                isInfoVisible = false;
-            } else {
-                userEmail.setText(email);
-                userPhone.setText(phone);
-                userVehicleNumber.setText(vNumber);
-                isInfoVisible = true;
+            if (this.isBiometricSuccess) {
+                if (isInfoVisible) {
+                    userEmail.setText(hiddenEmail);
+                    userPhone.setText(hiddenPhone);
+                    userVehicleNumber.setText(hiddenVNumber);
+                    isInfoVisible = false;
+                } else {
+                    userEmail.setText(email);
+                    userPhone.setText(phone);
+                    userVehicleNumber.setText(vNumber);
+                    isInfoVisible = true;
+                }
             }
         });
 
