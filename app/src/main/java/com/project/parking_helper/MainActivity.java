@@ -192,6 +192,9 @@ public class MainActivity extends AppCompatActivity{
                             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                                 super.onAuthenticationSucceeded(result);
                                 isBiometricSuccess = true;
+                                Intent intent = new Intent(MainActivity.this, UserProfileSettings.class);
+                                startActivity(intent);
+                                isBiometricSuccess = false;
                             }
 
                             @Override
@@ -209,15 +212,6 @@ public class MainActivity extends AppCompatActivity{
 
 
                         biometricPrompt.authenticate(promptInfo);
-                    }
-
-                    intent = new Intent(MainActivity.this, UserProfileSettings.class);
-                    if (isBiometricSuccess) {
-                        startActivity(intent);
-                        isBiometricSuccess = false;
-                    }
-                    else {
-                        return false;
                     }
                 }
                 else if (id == R.id.navMenuLogout) {
