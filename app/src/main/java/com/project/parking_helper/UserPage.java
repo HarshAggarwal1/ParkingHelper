@@ -1,12 +1,19 @@
 package com.project.parking_helper;
 
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricManager;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.project.parking_helper.database.Database;
+
+import java.util.concurrent.Executor;
 
 public class UserPage extends AppCompatActivity {
 
@@ -16,6 +23,7 @@ public class UserPage extends AppCompatActivity {
 
     TextView userName, userEmail, userPhone, userVehicleNumber;
     ImageView showInfoButton;
+    private static boolean isBiometricSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,65 @@ public class UserPage extends AppCompatActivity {
         });
 
         showInfoButton.setOnClickListener(v -> {
+
+            if (!UserPage.isBiometricSuccess) {
+                BiometricManager biometricManager = BiometricManager.from(this);
+                biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+                if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
+                    Toast.makeText(this, "Please authenticate to view your information", Toast.LENGTH_SHORT).show();
+                    UserPage.isBiometricSuccess = true;
+                }
+                else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
+                    Toast.makeText(this, "Try Again Later!", Toast.LENGTH_SHORT).show();
+                    UserPage.isBiometricSuccess = false;
+                    return;
+                }
+                else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
+                    Toast.makeText(this, "No user found", Toast.LENGTH_SHORT).show();
+                    UserPage.isBiometricSuccess = false;
+                    return;
+                }
+                else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
+                    Toast.makeText(this, "Please authenticate to view your information", Toast.LENGTH_SHORT).show();
+                    UserPage.isBiometricSuccess = true;
+                }
+
+                Executor executor = ContextCompat.getMainExecutor(this);
+                BiometricPrompt biometricPrompt = new BiometricPrompt(UserPage.this, executor, new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+
+                        Toast.makeText(UserPage.this, "Authentication Error: " + errString, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+
+                        Toast.makeText(UserPage.this, "Authentication Successful!", Toast.LENGTH_SHORT).show();
+                        UserPage.isBiometricSuccess = true;
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+
+                        Toast.makeText(UserPage.this, "Authentication Failed!", Toast.LENGTH_SHORT).show();
+                        UserPage.isBiometricSuccess = false;
+                    }
+                });
+
+                BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                        .setTitle("Biometric Authentication")
+                        .setSubtitle("Please authenticate to view your information")
+                        .setNegativeButtonText("Cancel")
+                        .build();
+
+                biometricPrompt.authenticate(promptInfo);
+            }
+
+
             if (isInfoVisible) {
                 userEmail.setText(hiddenEmail);
                 userPhone.setText(hiddenPhone);
