@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity{
                                 .setNegativeButtonText("Cancel")
                                 .build();
 
+
                         biometricPrompt.authenticate(promptInfo);
                     }
 
