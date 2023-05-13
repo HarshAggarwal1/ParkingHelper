@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
     private boolean callPermissionGranted = true;
     private boolean isBiometricSuccess = false;
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode,permissions,grantResults);
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else {
             Log.d("MainActivity", "Call Permission Not Granted");
-            return;
+            finish();
         }
 
         drawerLayout.setNavigationDrawer();
@@ -169,12 +170,14 @@ public class MainActivity extends AppCompatActivity{
                 }
                 else if (id == R.id.navMenuSettings) {
 
+                    if (database.appDao().count() == 0) {
+                        Toast.makeText(MainActivity.this, "Please Login First!", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+
                     if (!isBiometricSuccess) {
                         BiometricManager biometricManager = BiometricManager.from(MainActivity.this);
-                        biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
-                        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
-                        }
-                        else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
+                        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
                             return false;
                         }
                         else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {

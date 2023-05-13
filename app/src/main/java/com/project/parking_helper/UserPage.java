@@ -64,10 +64,7 @@ public class UserPage extends AppCompatActivity {
 
             if (!this.isBiometricSuccess) {
                 BiometricManager biometricManager = BiometricManager.from(this);
-                biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
-                if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
-                }
-                else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
+                if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
                     return;
                 }
                 else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
