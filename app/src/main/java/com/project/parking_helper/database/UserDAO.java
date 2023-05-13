@@ -29,6 +29,10 @@ public interface UserDAO {
     @Query("SELECT * FROM UserData WHERE email = :email")
     UserData getUserAllData(String email);
 
+    // Query to update the email in database for the entered email
+    @Query("UPDATE UserData SET email = :newEmail WHERE email = :email")
+    void updateEmail(String email, String newEmail);
+
     // Query to update the vehicle number in database for the entered email
     @Query("UPDATE UserData SET `Vehicle Number` = :vehicleNumber WHERE email = :email")
     void updateVehicleNumber(String email, String vehicleNumber);

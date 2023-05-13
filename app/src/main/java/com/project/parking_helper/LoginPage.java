@@ -81,10 +81,12 @@ public class LoginPage extends AppCompatActivity {
 
             if (database.userDao().checkEmail(emailText) == null) {
                 email.setError("Email not registered");
+                email.setText("");
                 email.requestFocus();
             }
             else if (!database.userDao().getPassword(emailText).equals(passwordText)) {
                 password.setError("Incorrect password");
+                password.setText("");
                 password.requestFocus();
             }
             else {
