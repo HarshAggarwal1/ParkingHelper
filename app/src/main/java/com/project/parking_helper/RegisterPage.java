@@ -116,7 +116,9 @@ public class RegisterPage extends AppCompatActivity {
             }
 
             String firstName = fName.getText().toString();
+            firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
             String lastName = lName.getText().toString();
+            lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
             String emailId = email.getText().toString();
             String pass = password.getText().toString();
             String cCode = countryCode.getText().toString();

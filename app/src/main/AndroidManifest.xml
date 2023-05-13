@@ -32,6 +32,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="false" />
+        <activity android:name=".UserProfileSettings"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity android:name=".RegisterPage"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"

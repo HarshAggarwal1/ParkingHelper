@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -25,6 +27,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.project.parking_helper.database.Database;
+
+import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity{
 
     private Database database;
     private boolean callPermissionGranted = true;
+    private boolean isBiometricSuccess = false;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -126,7 +131,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         callerCardAddPersonOrChat.setOnClickListener(v -> {
-            Toast.makeText(this, "Add Person or Chat Button Clicked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Chat Button Clicked", Toast.LENGTH_SHORT).show();
 //            Intent intent = new Intent(MainActivity.this, AddPersonOrChatPage.class);
 //            startActivity(intent);
         });
@@ -153,7 +158,6 @@ public class MainActivity extends AppCompatActivity{
                 int id = item.getItemId();
                 Intent intent;
                 if (id == R.id.navMenuLogin) {
-                    System.out.println("Login Clicked");
                     intent = new Intent(MainActivity.this, LoginPage.class);
                     startActivity(intent);
                 }
@@ -164,7 +168,56 @@ public class MainActivity extends AppCompatActivity{
                     Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
                 }
                 else if (id == R.id.navMenuSettings) {
-                    Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
+
+                    if (!isBiometricSuccess) {
+                        BiometricManager biometricManager = BiometricManager.from(MainActivity.this);
+                        biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+                        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
+                        }
+                        else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
+                            return false;
+                        }
+                        else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
+                            return false;
+                        }
+
+                        Executor executor = ContextCompat.getMainExecutor(MainActivity.this);
+                        BiometricPrompt biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+                            @Override
+                            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                                super.onAuthenticationError(errorCode, errString);
+                            }
+
+                            @Override
+                            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                                super.onAuthenticationSucceeded(result);
+                                isBiometricSuccess = true;
+                            }
+
+                            @Override
+                            public void onAuthenticationFailed() {
+                                super.onAuthenticationFailed();
+                                isBiometricSuccess = false;
+                            }
+                        });
+
+                        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                                .setTitle("Biometric Authentication")
+                                .setSubtitle("Please authenticate to open Settings")
+                                .setNegativeButtonText("Cancel")
+                                .build();
+
+                        biometricPrompt.authenticate(promptInfo);
+                    }
+
+                    intent = new Intent(MainActivity.this, UserProfileSettings.class);
+                    if (isBiometricSuccess) {
+                        startActivity(intent);
+                        isBiometricSuccess = false;
+                    }
+                    else {
+                        return false;
+                    }
                 }
                 else if (id == R.id.navMenuLogout) {
                     database.appDao().deleteAll();
