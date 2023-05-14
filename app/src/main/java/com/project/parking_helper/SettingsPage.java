@@ -28,7 +28,8 @@ public class SettingsPage extends AppCompatActivity {
         });
 
         deleteAccount.setOnClickListener(v -> {
-            Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SettingsPage.this, DeleteAccountPage.class);
+            startActivity(intent);
         });
 
         appSettings.setOnClickListener(v -> {
