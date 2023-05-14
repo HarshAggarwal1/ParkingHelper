@@ -23,7 +23,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="12dp"
             android:background="@drawable/circle_bg_translucent_black"
             android:clickable="true"
             android:focusable="true"
@@ -38,6 +38,7 @@
             android:fontFamily="@font/inria_sans"
             android:gravity="center"
             android:text="User Settings"
+            android:translationX="-24dp"
             android:textColor="#FFFFFFFF"
             android:textSize="20sp" />
     </LinearLayout>

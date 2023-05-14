@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
     ImageView userIcon, cameraIconImage, navigationMenu;
     MyDrawer drawerLayout;
     CardView callerCard;
-    ImageView callerCardUserPic, callerCardCall, callerCardAddPersonOrChat, callerCardCancel;
+    ImageView callerCardUserPic, callerCardCall, callerCardChat, callerCardCancel;
     TextView callerCardUserName;
 
     private static String generatedCode = "";
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity{
         callerCard = findViewById(R.id.main_caller_card);
         callerCardUserPic = findViewById(R.id.caller_card_pic);
         callerCardCall = findViewById(R.id.caller_card_phone_icon);
-        callerCardAddPersonOrChat = findViewById(R.id.caller_card_chat_icon);
+        callerCardChat = findViewById(R.id.caller_card_chat_icon);
         callerCardCancel = findViewById(R.id.caller_card_cancel_icon);
         callerCardUserName = findViewById(R.id.caller_card_name);
 
@@ -131,10 +131,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        callerCardAddPersonOrChat.setOnClickListener(v -> {
-            Toast.makeText(this, "Chat Button Clicked", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(MainActivity.this, AddPersonOrChatPage.class);
-//            startActivity(intent);
+        callerCardChat.setOnClickListener(v -> {
+//            Toast.makeText(this, "Chat Button Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, SettingsPage.class);
+            startActivity(intent);
         });
 
         callerCardCancel.setOnClickListener(v -> {

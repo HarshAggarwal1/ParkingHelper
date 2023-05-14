@@ -40,6 +40,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="false" />
+        <activity android:name=".SettingsPage"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
