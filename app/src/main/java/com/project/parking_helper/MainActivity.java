@@ -132,9 +132,9 @@ public class MainActivity extends AppCompatActivity{
         });
 
         callerCardChat.setOnClickListener(v -> {
-//            Toast.makeText(this, "Chat Button Clicked", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, SettingsPage.class);
-            startActivity(intent);
+            Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(MainActivity.this, SettingsPage.class);
+//            startActivity(intent);
         });
 
         callerCardCancel.setOnClickListener(v -> {
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity{
                             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                                 super.onAuthenticationSucceeded(result);
                                 isBiometricSuccess = true;
-                                Intent intent = new Intent(MainActivity.this, UserProfileSettings.class);
+                                Intent intent = new Intent(MainActivity.this, SettingsPage.class);
                                 if (isBiometricSuccess) {
                                     startActivity(intent);
                                 }
