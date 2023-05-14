@@ -23,8 +23,6 @@ public class UserData {
     @ColumnInfo(name = "Password")
     private String password;
 
-    @ColumnInfo(name = "Country Code")
-    private String countryCode;
 
     @ColumnInfo(name = "Phone Number")
     private String phoneNumber;
@@ -32,24 +30,22 @@ public class UserData {
     @ColumnInfo(name = "Vehicle Number")
     private String vehicleNumber;
 
-    public UserData(long id, String firstName, String lastName, String email, String password, String countryCode, String phoneNumber, String vehicleNumber) {
+    public UserData(long id, String firstName, String lastName, String email, String password, String phoneNumber, String vehicleNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.countryCode = countryCode;
         this.phoneNumber = phoneNumber;
         this.vehicleNumber = vehicleNumber;
     }
 
     @Ignore
-    public UserData(String firstName, String lastName, String email, String password, String countryCode, String phoneNumber, String vehicleNumber) {
+    public UserData(String firstName, String lastName, String email, String password, String phoneNumber, String vehicleNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.countryCode = countryCode;
         this.phoneNumber = phoneNumber;
         this.vehicleNumber = vehicleNumber;
     }
@@ -92,14 +88,6 @@ public class UserData {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
     }
 
     public String getPhoneNumber() {

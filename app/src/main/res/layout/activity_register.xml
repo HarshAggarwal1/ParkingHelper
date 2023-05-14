@@ -116,35 +116,21 @@
         app:layout_constraintTop_toBottomOf="@+id/registerEditTextEmail" />
 
     <EditText
-        android:id="@+id/registerEditTextCountryCode"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rectangle_bg_bluegray_50_border_black_900_radius_20"
-        android:hint="( +__ )"
-        android:inputType="number"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerEditTextPassword" />
-
-    <EditText
         android:id="@+id/registerEditTextContact"
-        android:layout_width="260dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:background="@drawable/rectangle_bg_bluegray_50_border_black_900_radius_20"
         android:hint="Contact Number"
         android:inputType="phone"
         android:paddingStart="10dp"
+        android:paddingLeft="20dp"
         android:paddingEnd="10dp"
+        android:paddingRight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.76"
-        app:layout_constraintStart_toEndOf="@+id/registerEditTextCountryCode"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerEditTextPassword" />
 
 

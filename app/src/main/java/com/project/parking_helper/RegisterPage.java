@@ -15,7 +15,7 @@ public class RegisterPage extends AppCompatActivity {
 
     private ImageView backButton, showPasswordButton;
     private Button submitButton;
-    private EditText fName, lName, email, password, countryCode, mobileNumber, vehicleNumber;
+    private EditText fName, lName, email, password, mobileNumber, vehicleNumber;
     private Database database;
 
     @Override
@@ -29,7 +29,6 @@ public class RegisterPage extends AppCompatActivity {
         lName = findViewById(R.id.registerEditTextLastName);
         email = findViewById(R.id.registerEditTextEmail);
         password = findViewById(R.id.registerEditTextPassword);
-        countryCode = findViewById(R.id.registerEditTextCountryCode);
         mobileNumber = findViewById(R.id.registerEditTextContact);
         showPasswordButton = findViewById(R.id.registerButtonShowHidePassword);
         vehicleNumber = findViewById(R.id.registerEditTextVehicle);
@@ -90,16 +89,6 @@ public class RegisterPage extends AppCompatActivity {
                 password.requestFocus();
                 return;
             }
-            else if (countryCode.getText().toString().isEmpty()) {
-                countryCode.setError("Please enter your country code");
-                countryCode.requestFocus();
-                return;
-            }
-            else if (!countryCode.getText().toString().matches("\\d+")) {
-                 countryCode.setError("Please enter a valid country code");
-                 countryCode.requestFocus();
-                 return;
-            }
             else if (mobileNumber.getText().toString().isEmpty()) {
                 mobileNumber.setError("Please enter your mobile number");
                 mobileNumber.requestFocus();
@@ -121,7 +110,6 @@ public class RegisterPage extends AppCompatActivity {
             lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
             String emailId = email.getText().toString();
             String pass = password.getText().toString();
-            String cCode = countryCode.getText().toString();
             String mNumber = mobileNumber.getText().toString();
             String vNumber = vehicleNumber.getText().toString();
 
@@ -131,7 +119,7 @@ public class RegisterPage extends AppCompatActivity {
             }
 
             try {
-                database.userDao().insert( new UserData(firstName, lastName, emailId, pass, cCode, mNumber, vNumber));
+                database.userDao().insert( new UserData(firstName, lastName, emailId, pass, mNumber, vNumber));
 
                 Toast.makeText(this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
                 finish();
