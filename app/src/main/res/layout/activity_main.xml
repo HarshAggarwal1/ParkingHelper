@@ -59,7 +59,7 @@
 
 
         <ImageView
-            android:padding="40dp"
+            android:padding="30dp"
             android:layout_width="164dp"
             android:layout_height="164dp"
             android:clickable="true"
@@ -73,7 +73,7 @@
             android:id="@+id/main_camera_icon"
             android:layout_gravity="center"
             android:contentDescription="@string/camera_icon_description"
-            android:src="@drawable/camera_icon" />
+            android:src="@drawable/qr_icon" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/main_caller_card"

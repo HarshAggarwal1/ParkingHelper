@@ -53,6 +53,12 @@ public class UserProfileSettings extends AppCompatActivity {
             if (!isEmailEditable) {
                 this.emailET.setEnabled(true);
                 editEmail.setImageResource(R.drawable.pencil_icon_green);
+                this.passwordET.setEnabled(false);
+                editPassword.setImageResource(R.drawable.pencil_icon);
+                this.phoneET.setEnabled(false);
+                editPhone.setImageResource(R.drawable.pencil_icon);
+                this.vehicleNumberET.setEnabled(false);
+                editVehicleNumber.setImageResource(R.drawable.pencil_icon);
                 isEmailEditable = true;
             } else {
                 this.emailET.setEnabled(false);
@@ -65,6 +71,12 @@ public class UserProfileSettings extends AppCompatActivity {
             if (!isPasswordEditable) {
                 this.passwordET.setEnabled(true);
                 editPassword.setImageResource(R.drawable.pencil_icon_green);
+                this.emailET.setEnabled(false);
+                editEmail.setImageResource(R.drawable.pencil_icon);
+                this.phoneET.setEnabled(false);
+                editPhone.setImageResource(R.drawable.pencil_icon);
+                this.vehicleNumberET.setEnabled(false);
+                editVehicleNumber.setImageResource(R.drawable.pencil_icon);
                 isPasswordEditable = true;
             } else {
                 this.passwordET.setEnabled(false);
@@ -77,6 +89,12 @@ public class UserProfileSettings extends AppCompatActivity {
             if (!isPhoneEditable) {
                 this.phoneET.setEnabled(true);
                 editPhone.setImageResource(R.drawable.pencil_icon_green);
+                this.emailET.setEnabled(false);
+                editEmail.setImageResource(R.drawable.pencil_icon);
+                this.passwordET.setEnabled(false);
+                editPassword.setImageResource(R.drawable.pencil_icon);
+                this.vehicleNumberET.setEnabled(false);
+                editVehicleNumber.setImageResource(R.drawable.pencil_icon);
                 isPhoneEditable = true;
             } else {
                 this.phoneET.setEnabled(false);
@@ -89,6 +107,12 @@ public class UserProfileSettings extends AppCompatActivity {
             if (!isVehicleNumberEditable) {
                 this.vehicleNumberET.setEnabled(true);
                 editVehicleNumber.setImageResource(R.drawable.pencil_icon_green);
+                this.emailET.setEnabled(false);
+                editEmail.setImageResource(R.drawable.pencil_icon);
+                this.passwordET.setEnabled(false);
+                editPassword.setImageResource(R.drawable.pencil_icon);
+                this.phoneET.setEnabled(false);
+                editPhone.setImageResource(R.drawable.pencil_icon);
                 isVehicleNumberEditable = true;
             } else {
                 this.vehicleNumberET.setEnabled(false);
