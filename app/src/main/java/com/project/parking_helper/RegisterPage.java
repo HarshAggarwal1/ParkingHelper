@@ -1,13 +1,22 @@
 package com.project.parking_helper;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.project.parking_helper.database.Database;
 import com.project.parking_helper.database.UserData;
 
@@ -113,22 +122,36 @@ public class RegisterPage extends AppCompatActivity {
             String mNumber = mobileNumber.getText().toString();
             String vNumber = vehicleNumber.getText().toString();
 
-            if (database.userDao().checkEmail(emailId) != null) {
-                Toast.makeText(this, "User already Registered!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            registerUser(firstName, lastName, emailId, pass, mNumber, vNumber);
 
-            try {
-                database.userDao().insert( new UserData(firstName, lastName, emailId, pass, mNumber, vNumber));
 
-                Toast.makeText(this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            catch (Exception e) {
-                Toast.makeText(this, "Error Occurred! Try Again.", Toast.LENGTH_SHORT).show();
-            }
+//            if (database.userDao().checkEmail(emailId) != null) {
+//                Toast.makeText(this, "User already Registered!", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            try {
+//                database.userDao().insert( new UserData(firstName, lastName, emailId, pass, mNumber, vNumber));
+//
+//                Toast.makeText(this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
+//                finish();
+//            }
+//            catch (Exception e) {
+//                Toast.makeText(this, "Error Occurred! Try Again.", Toast.LENGTH_SHORT).show();
+//            }
 
         });
 
+    }
+    public void registerUser(String fName, String lName, String email, String password, String mobileNumber, String vehicleNumber) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Users");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterPage.this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progress_bar);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        storageReference.p
     }
 }
