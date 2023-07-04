@@ -3,17 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:gravity="center">
 
     <ProgressBar
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:indeterminateTint="#FFD056E3" />
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="Loading..."
         android:textColor="#FFD056E3"
