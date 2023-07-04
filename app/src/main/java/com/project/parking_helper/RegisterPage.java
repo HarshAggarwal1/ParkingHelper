@@ -15,8 +15,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.project.parking_helper.database.DataClass;
 import com.project.parking_helper.database.Database;
 import com.project.parking_helper.database.UserData;
 
@@ -144,14 +147,17 @@ public class RegisterPage extends AppCompatActivity {
 
     }
     public void registerUser(String fName, String lName, String email, String password, String mobileNumber, String vehicleNumber) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Users");
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterPage.this);
-        builder.setCancelable(false);
-        builder.setView(R.layout.progress_bar);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        storageReference.p
+        // cuurent time stamp
+        String timeStamp = "" + System.currentTimeMillis();
+        timeStamp = timeStamp.substring(0, 5) + mobileNumber + timeStamp.substring(5, 10);
+        long id = Long.parseLong(timeStamp);
+        // upload the data to Firebase Database in Users table
+        DataClass dataClass = new DataClass(id, fName, lName, email, password, mobileNumber, vehicleNumber);
+        try {
+            FirebaseDatabase.getInstance().getReference("Users").child("" + id).setValue(dataClass);
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Error Occurred! Try Again.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
