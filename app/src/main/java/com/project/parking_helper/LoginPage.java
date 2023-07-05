@@ -151,6 +151,7 @@ public class LoginPage extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 String email = account.getEmail();
                 System.out.println(email);
+
                 Intent intent = new Intent(LoginPage.this, MainActivity.class);
                 progressLoadingBar.dismissDialog();
                 startActivity(intent);
