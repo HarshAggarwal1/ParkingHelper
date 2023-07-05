@@ -1,42 +1,26 @@
 package com.project.parking_helper;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.ktx.Firebase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.project.parking_helper.database.DataClass;
-import com.project.parking_helper.database.Database;
-import com.project.parking_helper.database.UserData;
+
+import java.util.Objects;
 
 public class RegisterPage extends AppCompatActivity {
 
-    private ImageView backButton, showPasswordButton;
-    private Button submitButton;
     private EditText fName, lName, email, password, mobileNumber, vehicleNumber;
-    private Database database;
+//    private Database database;
     private ProgressLoadingBar progressLoadingBar;
     private FirebaseAuth mAuth;
 
@@ -45,18 +29,18 @@ public class RegisterPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        backButton = findViewById(R.id.registerBack);
-        submitButton = findViewById(R.id.registerButtonSubmit);
+        ImageView backButton = findViewById(R.id.registerBack);
+        Button submitButton = findViewById(R.id.registerButtonSubmit);
         fName = findViewById(R.id.registerEditTextFirstName);
         lName = findViewById(R.id.registerEditTextLastName);
         email = findViewById(R.id.registerEditTextEmail);
         password = findViewById(R.id.registerEditTextPassword);
         mobileNumber = findViewById(R.id.registerEditTextContact);
-        showPasswordButton = findViewById(R.id.registerButtonShowHidePassword);
+        ImageView showPasswordButton = findViewById(R.id.registerButtonShowHidePassword);
         vehicleNumber = findViewById(R.id.registerEditTextVehicle);
         progressLoadingBar = new ProgressLoadingBar(this);
 
-        database = Database.getInstance(this);
+//        database = Database.getInstance(this);
 
         showPasswordButton.setOnClickListener(v -> {
             if (password.getInputType() == 129) {
@@ -66,9 +50,7 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
 
         submitButton.setOnClickListener(v -> {
 
@@ -162,53 +144,45 @@ public class RegisterPage extends AppCompatActivity {
 
     }
     public void registerUser(String fName, String lName, String email, String password, String mobileNumber, String vehicleNumber) {
-
-
-        String temp = String.valueOf(mobileNumber);
-        String id = temp.substring(5, 10) + System.currentTimeMillis() + temp.substring(0, 5);
         mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterPage.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isComplete()) {
-                    Toast.makeText(RegisterPage.this, "Error Occurred! Try Again.", Toast.LENGTH_SHORT).show();
-                    finish();
+
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterPage.this, task -> {
+            if (!task.isSuccessful()) {
+                try {
+                    throw Objects.requireNonNull(task.getException());
                 }
-                else {
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    if (firebaseUser != null) {
-                        sendEmailVerification(firebaseUser);
-                        firebaseUser.sendEmailVerification();
-                    }
-                    DataClass dataClass = new DataClass(fName, lName, email, mobileNumber, vehicleNumber);
-                    FirebaseDatabase.getInstance().getReference("Users").child(String.valueOf(id)).setValue(dataClass);
-                    Toast.makeText(RegisterPage.this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
-                    progressLoadingBar.dismissDialog();
-                    finish();
+                catch (FirebaseAuthUserCollisionException existEmail) {
+                    Toast.makeText(RegisterPage.this, "Email already exists", Toast.LENGTH_SHORT).show();
+                }
+                catch (FirebaseAuthWeakPasswordException weakPassword) {
+                    Toast.makeText(RegisterPage.this, "Weak Password", Toast.LENGTH_SHORT).show();
+                }
+                catch (FirebaseAuthInvalidCredentialsException malformedEmail) {
+                    Toast.makeText(RegisterPage.this, "Malformed Email", Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception e) {
+                    Toast.makeText(RegisterPage.this, "Error Occurred! Try Again.", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
-    }
-    private void sendEmailVerification(@NonNull FirebaseUser user) {
-        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(RegisterPage.this, "Confirmation email sent. Please check your inbox or Spam.", Toast.LENGTH_SHORT).show();
-                } else {
-                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("TAG", "User account deleted.");
-                            } else {
-                                Log.d("TAG", "Failed to delete user account.");
-                            }
+            else {
+                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(fName + " " + lName).build();
+                if (firebaseUser != null) {
+                    firebaseUser.updateProfile(profileUpdates);
+                    DataClass dataClass = new DataClass(mobileNumber, vehicleNumber);
+                    FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).setValue(dataClass).addOnCompleteListener(task1 -> {
+                        if (!task1.isSuccessful()) {
+                            Toast.makeText(RegisterPage.this, "Error Occurred while registration! Try Again.", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(RegisterPage.this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
+                            firebaseUser.sendEmailVerification();
                         }
                     });
-                    Toast.makeText(RegisterPage.this, "Failed to send confirmation email. Please try to register again!", Toast.LENGTH_SHORT).show();
                 }
             }
+            progressLoadingBar.dismissDialog();
+            finish();
         });
     }
 }

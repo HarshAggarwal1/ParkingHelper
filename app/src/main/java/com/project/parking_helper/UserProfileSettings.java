@@ -40,14 +40,14 @@ public class UserProfileSettings extends AppCompatActivity {
         database = Database.getInstance(this);
 
         String email = database.appDao().getFirstRow().getEmail();
-        String password = database.userDao().getUserAllData(email).getPassword();
-        String phone = database.userDao().getUserAllData(email).getPhoneNumber();
-        String vehicleNumber = database.userDao().getUserAllData(email).getVehicleNumber();
+//        String password = database.userDao().getUserAllData(email).getPassword();
+//        String phone = database.userDao().getUserAllData(email).getPhoneNumber();
+//        String vehicleNumber = database.userDao().getUserAllData(email).getVehicleNumber();
 
         this.emailET.setText(email);
-        this.passwordET.setText(password);
-        this.phoneET.setText(phone);
-        this.vehicleNumberET.setText(vehicleNumber);
+//        this.passwordET.setText(password);
+//        this.phoneET.setText(phone);
+//        this.vehicleNumberET.setText(vehicleNumber);
 
         editEmail.setOnClickListener(v -> {
             if (!isEmailEditable) {
@@ -164,22 +164,22 @@ public class UserProfileSettings extends AppCompatActivity {
             String vehicleNumberText = this.vehicleNumberET.getText().toString();
 
             String currentEmail = database.appDao().getFirstRow().getEmail();
-            String currentPassword = database.userDao().getUserAllData(currentEmail).getPassword();
-
-            database.userDao().updateEmail(currentEmail, emailText);
-            database.userDao().updatePassword(emailText, passwordText);
-            database.userDao().updatePhoneNumber(emailText, phoneText);
-            database.userDao().updateVehicleNumber(emailText, vehicleNumberText);
+//            String currentPassword = database.userDao().getUserAllData(currentEmail).getPassword();
+//
+//            database.userDao().updateEmail(currentEmail, emailText);
+//            database.userDao().updatePassword(emailText, passwordText);
+//            database.userDao().updatePhoneNumber(emailText, phoneText);
+//            database.userDao().updateVehicleNumber(emailText, vehicleNumberText);
 
             this.emailET.setEnabled(false);
             this.passwordET.setEnabled(false);
             this.phoneET.setEnabled(false);
             this.vehicleNumberET.setEnabled(false);
 
-            if (!currentEmail.equals(emailText) || !currentPassword.equals(passwordText)) {
-                Toast.makeText(this, "Please login again as Email or Password changed", Toast.LENGTH_SHORT).show();
-                database.appDao().deleteAll();
-            }
+//            if (!currentEmail.equals(emailText) || !currentPassword.equals(passwordText)) {
+//                Toast.makeText(this, "Please login again as Email or Password changed", Toast.LENGTH_SHORT).show();
+//                database.appDao().deleteAll();
+//            }
 
             finish();
         });

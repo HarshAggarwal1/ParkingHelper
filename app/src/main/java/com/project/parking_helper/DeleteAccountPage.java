@@ -33,7 +33,7 @@ public class DeleteAccountPage extends AppCompatActivity {
         deleteButton.setOnClickListener(v -> {
             String email = database.appDao().getFirstRow().getEmail();
             database.appDao().deleteAll();
-            database.userDao().deleteUser(email);
+//            database.userDao().deleteUser(email);
             finish();
         });
     }
