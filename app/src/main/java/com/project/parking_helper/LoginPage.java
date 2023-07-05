@@ -196,7 +196,7 @@ public class LoginPage extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(LoginPage.this, MainActivity.class);
-//                progressLoadingBar.dismissDialog();
+                progressLoadingBar.dismissDialog();
                 startActivity(intent);
             } else {
                 try {
