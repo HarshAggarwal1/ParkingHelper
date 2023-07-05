@@ -1,5 +1,6 @@
 package com.project.parking_helper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,6 +9,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.project.parking_helper.database.DataClass;
 import com.project.parking_helper.database.Database;
 
 public class UserProfileSettings extends AppCompatActivity {
@@ -19,6 +25,9 @@ public class UserProfileSettings extends AppCompatActivity {
     Button saveButton;
 
     private boolean isEmailEditable = false, isPasswordEditable = false, isPhoneEditable = false, isVehicleNumberEditable = false;
+
+    private FirebaseAuth mAuth;
+    private ProgressLoadingBar progressLoadingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +44,22 @@ public class UserProfileSettings extends AppCompatActivity {
         phoneET = findViewById(R.id.profile_settings_phone_text);
         vehicleNumberET = findViewById(R.id.profile_settings_vehicle_text);
 
+        mAuth = FirebaseAuth.getInstance();
+        progressLoadingBar = new ProgressLoadingBar(this);
+
         saveButton = findViewById(R.id.profile_settings_save);
 
         database = Database.getInstance(this);
 
         String email = database.appDao().getFirstRow().getEmail();
-//        String password = database.userDao().getUserAllData(email).getPassword();
-//        String phone = database.userDao().getUserAllData(email).getPhoneNumber();
-//        String vehicleNumber = database.userDao().getUserAllData(email).getVehicleNumber();
+        String password = database.appDao().getFirstRow().getPassword();
+        String phone = database.appDao().getFirstRow().getPhone();
+        String vehicleNumber = database.appDao().getFirstRow().getVehicle();
 
         this.emailET.setText(email);
-//        this.passwordET.setText(password);
-//        this.phoneET.setText(phone);
-//        this.vehicleNumberET.setText(vehicleNumber);
+        this.passwordET.setText(password);
+        this.phoneET.setText(phone);
+        this.vehicleNumberET.setText(vehicleNumber);
 
         editEmail.setOnClickListener(v -> {
             if (!isEmailEditable) {
@@ -157,14 +169,13 @@ public class UserProfileSettings extends AppCompatActivity {
                 phoneET.requestFocus();
                 return;
             }
-
             String emailText = this.emailET.getText().toString();
             String passwordText = this.passwordET.getText().toString();
             String phoneText = this.phoneET.getText().toString();
             String vehicleNumberText = this.vehicleNumberET.getText().toString();
 
             String currentEmail = database.appDao().getFirstRow().getEmail();
-//            String currentPassword = database.userDao().getUserAllData(currentEmail).getPassword();
+            String currentPassword = database.appDao().getFirstRow().getPassword();
 //
 //            database.userDao().updateEmail(currentEmail, emailText);
 //            database.userDao().updatePassword(emailText, passwordText);
@@ -176,16 +187,51 @@ public class UserProfileSettings extends AppCompatActivity {
             this.phoneET.setEnabled(false);
             this.vehicleNumberET.setEnabled(false);
 
-//            if (!currentEmail.equals(emailText) || !currentPassword.equals(passwordText)) {
-//                Toast.makeText(this, "Please login again as Email or Password changed", Toast.LENGTH_SHORT).show();
-//                database.appDao().deleteAll();
-//            }
+            progressLoadingBar.startLoadingDialog();
+            updateProfile(currentEmail, currentPassword, emailText, passwordText, phoneText, vehicleNumberText);
 
-            finish();
+            Toast.makeText(this, "Settings Changed. Please Login Again!", Toast.LENGTH_SHORT).show();
+            database.appDao().deleteAll();
+            Intent i = new Intent(UserProfileSettings.this, LoginPage.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         });
 
         backButton = findViewById(R.id.profile_settings_back_button);
 
         backButton.setOnClickListener(v -> finish());
+    }
+
+    private void updateProfile(String currentEmail, String currentPassword, String emailText, String passwordText, String mobileNumber, String vehicleNumber) {
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        System.out.println(user == null);
+        if (user != null) {
+            // update email
+            if (!currentEmail.equals(emailText)) {
+                user.updateEmail(emailText).addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(this, "Email update failed", Toast.LENGTH_SHORT).show();
+                        progressLoadingBar.dismissDialog();
+                        return;
+                    }
+                });
+            }
+            if (!currentPassword.equals(passwordText)) {
+                user.updatePassword(passwordText).addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(this, "Password update failed", Toast.LENGTH_SHORT).show();
+                        progressLoadingBar.dismissDialog();
+                        return;
+                    }
+                });
+            }
+            // update user firebase realtime database record
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+            databaseReference.child(user.getUid()).child("phoneNumber").setValue(mobileNumber);
+            databaseReference.child(user.getUid()).child("vehicleNumber").setValue(vehicleNumber);
+            progressLoadingBar.dismissDialog();
+            mAuth.signOut();
+        }
     }
 }

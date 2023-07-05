@@ -26,6 +26,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.project.parking_helper.database.Database;
 
 import java.util.concurrent.Executor;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
     private Database database;
     private boolean callPermissionGranted = true;
     private boolean isBiometricSuccess = false;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -94,6 +96,8 @@ public class MainActivity extends AppCompatActivity{
         callerCardChat = findViewById(R.id.caller_card_chat_icon);
         callerCardCancel = findViewById(R.id.caller_card_cancel_icon);
         callerCardUserName = findViewById(R.id.caller_card_name);
+
+        mAuth = FirebaseAuth.getInstance();
 
         database = Database.getInstance(this);
 
@@ -220,10 +224,14 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
                 else if (id == R.id.navMenuLogout) {
+                    mAuth.signOut();
                     database.appDao().deleteAll();
                     Menu menu = navigationView.getMenu();
                     menu.findItem(R.id.navMenuLogin).setVisible(true);
                     menu.findItem(R.id.navMenuLogout).setVisible(false);
+                    Intent i = new Intent(MainActivity.this, LoginPage.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
                 }
                 drawerLayout.closeDrawers();
                 return true;

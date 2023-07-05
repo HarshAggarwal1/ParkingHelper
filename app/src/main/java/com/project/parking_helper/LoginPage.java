@@ -121,7 +121,7 @@ public class LoginPage extends AppCompatActivity {
         });
 
         googleSignInButton.setOnClickListener(v -> {
-            progressLoadingBar.startLoadingDialog();
+//            progressLoadingBar.startLoadingDialog();
             signIn();
         });
 
@@ -153,11 +153,11 @@ public class LoginPage extends AppCompatActivity {
                 System.out.println(email);
 
                 Intent intent = new Intent(LoginPage.this, MainActivity.class);
-                progressLoadingBar.dismissDialog();
+//                progressLoadingBar.dismissDialog();
                 startActivity(intent);
             }
             catch (ApiException e) {
-                progressLoadingBar.dismissDialog();
+//                progressLoadingBar.dismissDialog();
                 e.printStackTrace();
                 Toast.makeText(this, "Error Occurred!", Toast.LENGTH_SHORT).show();
             }
@@ -223,5 +223,23 @@ public class LoginPage extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressLoadingBar.dismissDialog();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        progressLoadingBar.dismissDialog();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        progressLoadingBar.dismissDialog();
     }
 }
