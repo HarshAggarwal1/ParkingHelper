@@ -1,5 +1,6 @@
 package com.project.parking_helper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -175,14 +176,15 @@ public class RegisterPage extends AppCompatActivity {
                             Toast.makeText(RegisterPage.this, "Error Occurred while registration! Try Again.", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(RegisterPage.this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
                             firebaseUser.sendEmailVerification();
                         }
                     });
                 }
             }
             progressLoadingBar.dismissDialog();
-            finish();
+            Intent intent = new Intent(RegisterPage.this, LoginPage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         });
     }
 }
