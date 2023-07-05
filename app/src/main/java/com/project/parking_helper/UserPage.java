@@ -39,20 +39,20 @@ public class UserPage extends AppCompatActivity {
         database = Database.getInstance(this);
 
         String email = database.appDao().getFirstRow().getEmail();
-//        String fName = database.userDao().getUserAllData(email).getFirstName();
-//        String lName = database.userDao().getUserAllData(email).getLastName();
-//        String name = fName + " " + lName;
-//        String vNumber = database.userDao().getUserAllData(email).getVehicleNumber();
-//        String phone = database.userDao().getUserAllData(email).getPhoneNumber();
+        String fName = database.appDao().getFirstRow().getFName();
+        String lName = database.appDao().getFirstRow().getLName();
+        String name = fName + " " + lName;
+        String vNumber = database.appDao().getFirstRow().getVehicle();
+        String phone = database.appDao().getFirstRow().getPhone();
 
-//        String hiddenEmail = email.charAt(0) + "*****" + email.substring(email.length() - 1);
-//        String hiddenPhone = phone.charAt(0) + "*****" + phone.substring(phone.length() - 1);
-//        String hiddenVNumber = vNumber.charAt(0) + "*****" + vNumber.substring(vNumber.length() - 1);
+        String hiddenEmail = email.charAt(0) + "*****" + email.substring(email.length() - 1);
+        String hiddenPhone = phone.charAt(0) + "*****" + phone.substring(phone.length() - 1);
+        String hiddenVNumber = vNumber.charAt(0) + "*****" + vNumber.substring(vNumber.length() - 1);
 
-//        userName.setText(name);
-//        userEmail.setText(hiddenEmail);
-//        userPhone.setText(hiddenPhone);
-//        userVehicleNumber.setText(hiddenVNumber);
+        userName.setText(name);
+        userEmail.setText(hiddenEmail);
+        userPhone.setText(hiddenPhone);
+        userVehicleNumber.setText(hiddenVNumber);
 
         backButton = findViewById(R.id.userPageBack);
 
@@ -83,8 +83,8 @@ public class UserPage extends AppCompatActivity {
                         super.onAuthenticationSucceeded(result);
                         isBiometricSuccess = true;
                         userEmail.setText(email);
-//                        userPhone.setText(phone);
-//                        userVehicleNumber.setText(vNumber);
+                        userPhone.setText(phone);
+                        userVehicleNumber.setText(vNumber);
                         isInfoVisible = true;
                     }
 
@@ -106,14 +106,14 @@ public class UserPage extends AppCompatActivity {
 
             if (this.isBiometricSuccess) {
                 if (isInfoVisible) {
-//                    userEmail.setText(hiddenEmail);
-//                    userPhone.setText(hiddenPhone);
-//                    userVehicleNumber.setText(hiddenVNumber);
+                    userEmail.setText(hiddenEmail);
+                    userPhone.setText(hiddenPhone);
+                    userVehicleNumber.setText(hiddenVNumber);
                     isInfoVisible = false;
                 } else {
                     userEmail.setText(email);
-//                    userPhone.setText(phone);
-//                    userVehicleNumber.setText(vNumber);
+                    userPhone.setText(phone);
+                    userVehicleNumber.setText(vNumber);
                     isInfoVisible = true;
                 }
             }

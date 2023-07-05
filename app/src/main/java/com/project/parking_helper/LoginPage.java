@@ -178,13 +178,11 @@ public class LoginPage extends AppCompatActivity {
                     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            // if user record exists, do nothing
                             if (snapshot.exists()) {
                                 String phoneNumber = snapshot.child("phoneNumber").getValue(String.class);
                                 String vehicle = snapshot.child("vehicleNumber").getValue(String.class);
-                                database.appDao().insert(new AppData(firstName, lastName, emaill, passwordd, phoneNumber, vehicle));
+                                database.appDao().insert(new AppData(emaill, passwordd, firstName, lastName, phoneNumber, vehicle));
                             }
-                            // else, create new user record
                             else {
                                 Log.d("TAG", "Data don't exist");
                             }
@@ -198,7 +196,7 @@ public class LoginPage extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(LoginPage.this, MainActivity.class);
-                progressLoadingBar.dismissDialog();
+//                progressLoadingBar.dismissDialog();
                 startActivity(intent);
             } else {
                 try {

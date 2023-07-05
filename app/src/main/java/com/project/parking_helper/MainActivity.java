@@ -232,6 +232,20 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            if (database.appDao().count() == 0) {
+                NavigationView navigationView = findViewById(R.id.mainNavMenu);
+                Menu menu = navigationView.getMenu();
+                menu.findItem(R.id.navMenuLogin).setVisible(true);
+                menu.findItem(R.id.navMenuLogout).setVisible(false);
+            }
+            else {
+                NavigationView navigationView = findViewById(R.id.mainNavMenu);
+                Menu menu = navigationView.getMenu();
+                menu.findItem(R.id.navMenuLogin).setVisible(false);
+                menu.findItem(R.id.navMenuLogout).setVisible(true);
+            }
+
             if (slideOffset == 0) {
                 layout.setAlpha(1);
                 layout.setElevation(drawerView.getElevation() + 1);
@@ -252,6 +266,20 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void onDrawerOpened(@NonNull View drawerView) {
+
+            if (database.appDao().count() == 0) {
+                NavigationView navigationView = findViewById(R.id.mainNavMenu);
+                Menu menu = navigationView.getMenu();
+                menu.findItem(R.id.navMenuLogin).setVisible(true);
+                menu.findItem(R.id.navMenuLogout).setVisible(false);
+            }
+            else {
+                NavigationView navigationView = findViewById(R.id.mainNavMenu);
+                Menu menu = navigationView.getMenu();
+                menu.findItem(R.id.navMenuLogin).setVisible(false);
+                menu.findItem(R.id.navMenuLogout).setVisible(true);
+            }
+
             layout.setAlpha(0.5f);
             layout.setElevation(0);
             callerCard.setElevation(0);
