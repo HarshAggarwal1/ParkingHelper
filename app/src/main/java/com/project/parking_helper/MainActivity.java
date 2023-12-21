@@ -1,5 +1,8 @@
 package com.project.parking_helper;
 
+import static android.telecom.TelecomManager.ACTION_CHANGE_DEFAULT_DIALER;
+import static android.telecom.TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.telecom.ConnectionRequest;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -31,7 +35,7 @@ import com.project.parking_helper.database.Database;
 
 import java.util.concurrent.Executor;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private final int requestCode = 1;
     ImageView userIcon, cameraIconImage, navigationMenu;
@@ -51,14 +55,13 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == this.requestCode) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                     Log.d("MainActivity", "Call Permission Accepted");
                 }
-            }
-            else {
+            } else {
                 Log.d("MainActivity", "Call Permission Denied");
             }
         }
@@ -67,6 +70,8 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        offerReplacingDefaultDialer();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         layout = findViewById(R.id.mainLayout);
@@ -79,8 +84,7 @@ public class MainActivity extends AppCompatActivity{
 
         if (callPermissionGranted) {
             Log.d("MainActivity", "Call Permission Already Granted");
-        }
-        else {
+        } else {
             Log.d("MainActivity", "Call Permission Not Granted");
             finish();
         }
@@ -129,10 +133,14 @@ public class MainActivity extends AppCompatActivity{
             String phoneNumber = getGeneratedCode();
 
             Uri uri = Uri.parse("tel:" + phoneNumber);
+
             TelecomManager telecomManager = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
-            if (telecomManager != null) {
-                    telecomManager.placeCall(uri,null);
-            }
+//            if (telecomManager != null) {
+//                telecomManager.placeCall(uri, null);
+//            }
+
+            makeCall(uri);
+
         });
 
         callerCardChat.setOnClickListener(v -> {
@@ -149,8 +157,13 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
+    private void makeCall(Uri uri) {
+        startActivity(new Intent(Intent.ACTION_CALL, uri));
+    }
+
     class MyDrawer implements DrawerLayout.DrawerListener {
         DrawerLayout drawerLayout;
+
         MyDrawer() {
             this.drawerLayout = findViewById(R.id.mainDrawerLayout);
             drawerLayout.addDrawerListener(this);
@@ -165,14 +178,11 @@ public class MainActivity extends AppCompatActivity{
                 if (id == R.id.navMenuLogin) {
                     intent = new Intent(MainActivity.this, LoginPage.class);
                     startActivity(intent);
-                }
-                else if (id == R.id.navMenuCallLog) {
+                } else if (id == R.id.navMenuCallLog) {
                     Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
-                }
-                else if (id == R.id.navMenuChat) {
+                } else if (id == R.id.navMenuChat) {
                     Toast.makeText(MainActivity.this, "Under Development", Toast.LENGTH_SHORT).show();
-                }
-                else if (id == R.id.navMenuSettings) {
+                } else if (id == R.id.navMenuSettings) {
 
                     if (database.appDao().count() == 0) {
                         Toast.makeText(MainActivity.this, "Please Login First!", Toast.LENGTH_SHORT).show();
@@ -183,8 +193,7 @@ public class MainActivity extends AppCompatActivity{
                         BiometricManager biometricManager = BiometricManager.from(MainActivity.this);
                         if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE) {
                             return false;
-                        }
-                        else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
+                        } else if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED) {
                             return false;
                         }
 
@@ -222,8 +231,7 @@ public class MainActivity extends AppCompatActivity{
 
                         biometricPrompt.authenticate(promptInfo);
                     }
-                }
-                else if (id == R.id.navMenuLogout) {
+                } else if (id == R.id.navMenuLogout) {
                     mAuth.signOut();
                     database.appDao().deleteAll();
                     Menu menu = navigationView.getMenu();
@@ -246,8 +254,7 @@ public class MainActivity extends AppCompatActivity{
                 Menu menu = navigationView.getMenu();
                 menu.findItem(R.id.navMenuLogin).setVisible(true);
                 menu.findItem(R.id.navMenuLogout).setVisible(false);
-            }
-            else {
+            } else {
                 NavigationView navigationView = findViewById(R.id.mainNavMenu);
                 Menu menu = navigationView.getMenu();
                 menu.findItem(R.id.navMenuLogin).setVisible(false);
@@ -261,8 +268,7 @@ public class MainActivity extends AppCompatActivity{
                 userIcon.setElevation(drawerView.getElevation() + 1);
                 navigationMenu.setElevation(drawerView.getElevation() + 1);
                 cameraIconImage.setElevation(drawerView.getElevation() + 1);
-            }
-            else {
+            } else {
                 layout.setElevation(0);
                 layout.setAlpha(1 - (slideOffset / 2));
                 callerCard.setElevation(22 - (slideOffset * 22));
@@ -280,8 +286,7 @@ public class MainActivity extends AppCompatActivity{
                 Menu menu = navigationView.getMenu();
                 menu.findItem(R.id.navMenuLogin).setVisible(true);
                 menu.findItem(R.id.navMenuLogout).setVisible(false);
-            }
-            else {
+            } else {
                 NavigationView navigationView = findViewById(R.id.mainNavMenu);
                 Menu menu = navigationView.getMenu();
                 menu.findItem(R.id.navMenuLogin).setVisible(false);
@@ -308,7 +313,8 @@ public class MainActivity extends AppCompatActivity{
         }
 
         @Override
-        public void onDrawerStateChanged(int newState) {}
+        public void onDrawerStateChanged(int newState) {
+        }
     }
 
     private String getGeneratedCode() {
@@ -345,8 +351,7 @@ public class MainActivity extends AppCompatActivity{
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.navMenuLogin).setVisible(true);
             menu.findItem(R.id.navMenuLogout).setVisible(false);
-        }
-        else {
+        } else {
             NavigationView navigationView = findViewById(R.id.mainNavMenu);
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.navMenuLogin).setVisible(false);
@@ -374,6 +379,16 @@ public class MainActivity extends AppCompatActivity{
         super.onPause();
         if (drawerLayout.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.drawerLayout.closeDrawers();
+        }
+    }
+
+    private void offerReplacingDefaultDialer() {
+        TelecomManager telecomManager = (TelecomManager) getSystemService(TELECOM_SERVICE);
+
+        if (!getPackageName().equals(telecomManager.getDefaultDialerPackage())) {
+            Intent intent = new Intent(ACTION_CHANGE_DEFAULT_DIALER)
+                    .putExtra(EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, getPackageName());
+            startActivity(intent);
         }
     }
 }
